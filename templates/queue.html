@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queue for Game</title>
+</head>
+<body>
+    <h1>Queue for Game</h1>
+    <form method="POST" action="{{ url_for('queue') }}">
+        <p>
+            <input type="hidden" name="username" value="current_user"> <!-- Поставьте здесь имя текущего пользователя -->
+            <input type="submit" value="Start Search">
+        </p>
+    </form>
+    <p>Players in queue: {{ queue_count }}</p>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

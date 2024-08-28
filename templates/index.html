@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .top-right-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .top-right-buttons form {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .button-red {
+            background-color: #f44336;
+        }
+
+        .button:hover {
+            opacity: 0.8;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .player-list {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .player-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .player-item img {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .rank {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопки для поиска и выхода -->
+    <div class="top-right-buttons">
+        <!-- Кнопка "Начать поиск" -->
+        <form method="POST" action="{{ url_for('index') }}">
+            <input type="hidden" name="username" value="current_user"> <!-- Замените на реального пользователя -->
+            <input type="hidden" name="action" value="start_search">
+            <button type="submit" class="button">Начать поиск</button>
+        </form>
+
+        <!-- Кнопка "Выйти из поиска" -->
+        <form method="POST" action="{{ url_for('index') }}">
+            <input type="hidden" name="username" value="current_user"> <!-- Замените на реального пользователя -->
+            <input type="hidden" name="action" value="leave_search">
+            <button type="submit" class="button button-red">Выйти из поиска</button>
+        </form>
+    </div>
+
+    <h1>Добро пожаловать в игру!</h1>
+
+    <!-- Список пользователей и их рейтинги с изображением головы скина -->
+    <h2>Топ игроки</h2>
+    <ul class="player-list">
+        {% for doc in documents %}
+            <li class="player-item">
+                <!-- Позиция игрока в рейтинге -->
+                <span class="rank">{{ loop.index }}.</span>
+                <!-- Изображение головы скина для каждого игрока -->
+                <img src="https://skin.vimeworld.com/helm/{{ doc['nickname'] }}.png" alt="{{ doc['nickname'] }}'s skin">
+
+                <!-- Изображение уровня в зависимости от рейтинга -->
+                {% if doc['rating'] >= 1450 %}
+                    <img src="{{ url_for('static', filename='10_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1370 %}
+                    <img src="{{ url_for('static', filename='9_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1300 %}
+                    <img src="{{ url_for('static', filename='8_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1250 %}
+                    <img src="{{ url_for('static', filename='7_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1200 %}
+                    <img src="{{ url_for('static', filename='6_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1170 %}
+                    <img src="{{ url_for('static', filename='5_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1110 %}
+                    <img src="{{ url_for('static', filename='4_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1070 %}
+                    <img src="{{ url_for('static', filename='3_lvl.png') }}" alt="Level Icon">
+                {% elif doc['rating'] >= 1020 %}
+                    <img src="{{ url_for('static', filename='2_lvl.png') }}" alt="Level Icon">
+                {% else %}
+                    <img src="{{ url_for('static', filename='1_lvl.png') }}" alt="Level Icon">
+                {% endif %}
+
+                {{ doc['nickname'] }} - {{ doc['rating'] }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('auth') }}">Авторизация</a>
+</body>
+</html>

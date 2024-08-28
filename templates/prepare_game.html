@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Подготовка к игре</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .players {
+            width: 20%;
+        }
+        .maps {
+            width: 60%;
+            text-align: center;
+        }
+        .maps button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .chosen-map {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+    <script>
+        function startClearTimer() {
+            setTimeout(function() {
+                fetch('/clear_banned_maps', {method: 'POST'})
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('Список карт был очищен.');
+                            window.location.reload();
+                        }
+                    });
+            }, 30000); // 30 секунд
+        }
+    </script>
+</head>
+<body>
+    <div class="players">
+        <h2>Игроки:</h2>
+        <ul>
+            {% for player in players %}
+                <li>{{ player }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="maps">
+        <h2>Выберите карты для бана:</h2>
+        {% if chosen_map %}
+            <p class="chosen-map">Выбрана карта: {{ chosen_map }}</p>
+            <script>startClearTimer();</script>
+        {% else %}
+            <form method="POST">
+                {% for map in maps %}
+                    <button type="submit" name="selected_map" value="{{ map }}">{{ map }}</button>
+                {% endfor %}
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Token Authentication</title>
+</head>
+<body>
+    <h1>Authenticate by Token</h1>
+    <form method="POST" action="{{ url_for('auth') }}">
+        <p>
+            <label for="token">Enter Token:</label><br>
+            <input type="text" id="token" name="token" required>
+        </p>
+        <p>
+            <input type="submit" value="Submit">
+        </p>
+    </form>
+
+    {% if username %}
+        <h2>Successfully Authenticated</h2>
+        <p>Username: {{ username }}</p>
+    {% elif username is not none %}
+        <h2>Authentication Failed</h2>
+        <p>Invalid token or username not found.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queue Status</title>
+</head>
+<body>
+    <h1>Current Queue</h1>
+    <ul>
+        {% for player in queue %}
+            <li>{{ player }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('queue') }}">Back to Queue Page</a>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
